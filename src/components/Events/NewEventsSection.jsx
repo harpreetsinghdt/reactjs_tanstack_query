@@ -7,8 +7,8 @@ import { fetchEvents } from "../../util/Http.js";
 
 export default function NewEventsSection() {
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ["events"],
-    queryFn: fetchEvents,
+    queryKey: ["events", { max: 3 }],
+    queryFn: ({ signal, queryKey }) => fetchEvents({ signal, ...queryKey[1] }),
     staleTime: 5000, // default=0, to prevent unnecessary requests, how long wait for new request to send, if return to that page within set staleTime time no new request will be sent
     gcTime: 1000 * 30, // i.e half minute (1000*30), garbage collector time, default= 5 minutes(1000*60*5), how long data cache kept, after this time new data will be fetched and cache
   });
